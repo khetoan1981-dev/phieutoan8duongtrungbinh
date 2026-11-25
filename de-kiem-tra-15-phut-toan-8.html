@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đề Kiểm Tra 15 Phút Toán 8 - Phân Tích Đa Thức & Đường Trung Bình</title>
+  <style>
+    :root {
+      --primary: #1d4ed8;
+      --primary-dark: #1e40af;
+      --primary-light: #eff6ff;
+      --success: #15803d;
+      --success-bg: #dcfce7;
+      --danger: #b91c1c;
+      --danger-bg: #fee2e2;
+      --warning: #b45309;
+      --warning-bg: #fef3c7;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #cbd5e1;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding-bottom: 60px;
+    }
+
+    /* Sticky Top Bar */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+      color: var(--primary-dark);
+      font-size: 0.95rem;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .badge-progress {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+    }
+
+    .badge-timer {
+      background: var(--warning-bg);
+      color: var(--warning);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .badge-timer.urgent {
+      background: var(--danger-bg);
+      color: var(--danger);
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.65; }
+    }
+
+    .container {
+      max-width: 880px;
+      margin: 24px auto;
+      padding: 0 16px;
+    }
+
+    /* Header Card */
+    .header-card {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+      color: #ffffff;
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.18);
+    }
+
+    .header-card h1 {
+      font-size: 1.55rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      letter-spacing: 0.2px;
+    }
+
+    .header-card .subtitle {
+      font-size: 1rem;
+      opacity: 0.92;
+      margin-bottom: 14px;
+    }
+
+    .meta-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 0.88rem;
+    }
+
+    .meta-pill {
+      background: rgba(255, 255, 255, 0.16);
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    /* Student Info */
+    .info-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin-bottom: 22px;
+      border: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .info-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .input-group input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Result Banner */
+    #result-panel {
+      display: none;
+      background: var(--card);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius);
+      padding: 22px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 24px rgba(30, 64, 175, 0.12);
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .score-circle {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      border: 3px solid var(--primary);
+      border-radius: 14px;
+      padding: 10px 22px;
+      text-align: center;
+    }
+
+    .score-circle .score-num {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .score-circle .score-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .result-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .stat-box {
+      background: var(--bg);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    .stat-box strong {
+      display: block;
+      font-size: 1.05rem;
+      color: var(--text);
+    }
+
+    /* Section Headers */
+    .section-title {
+      background: #e2e8f0;
+      color: #0f172a;
+      padding: 12px 18px;
+      border-left: 5px solid var(--primary);
+      border-radius: 8px;
+      margin: 26px 0 16px;
+      font-size: 1.08rem;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .section-title span.pts {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+      background: #ffffff;
+      padding: 2px 10px;
+      border-radius: 999px;
+    }
+
+    /* Question Cards */
+    .question-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      transition: border-color 0.2s;
+    }
+
+    .question-card.correct {
+      border-color: var(--success);
+      background: #f0fdf4;
+    }
+
+    .question-card.wrong {
+      border-color: var(--danger);
+      background: #fef2f2;
+    }
+
+    .q-header {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      font-size: 1rem;
+    }
+
+    .q-num {
+      font-weight: 700;
+      color: var(--primary-dark);
+      white-space: nowrap;
+    }
+
+    .q-text {
+      font-weight: 500;
+    }
+
+    .q-diagram {
+      margin: 10px 0 14px;
+      text-align: center;
+    }
+
+    /* Multiple Choice Options */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .option-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      cursor: pointer;
+      background: #ffffff;
+      transition: all 0.15s ease;
+      font-size: 0.96rem;
+    }
+
+    .option-label:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .option-label input[type="radio"] {
+      accent-color: var(--primary);
+      width: 17px;
+      height: 17px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .option-label.selected {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      font-weight: 600;
+    }
+
+    .option-label.opt-correct {
+      border-color: var(--success) !important;
+      background: var(--success-bg) !important;
+      color: #14532d;
+      font-weight: 600;
+    }
+
+    .option-label.opt-wrong {
+      border-color: var(--danger) !important;
+      background: var(--danger-bg) !important;
+      color: #7f1d1d;
+    }
+
+    /* True / False Options */
+    .tf-options {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .tf-options .option-label {
+      min-width: 130px;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    /* Explanation Box */
+    .explanation {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: #ffffff;
+      border-left: 4px solid var(--primary);
+      font-size: 0.9rem;
+      color: #334155;
+    }
+
+    .explanation strong {
+      color: var(--primary-dark);
+    }
+
+    /* Action Buttons */
+    .actions-bar {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .btn {
+      padding: 12px 26px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.1s, background-color 0.2s, box-shadow 0.2s;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background: #e2e8f0;
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      background: #cbd5e1;
+    }
+
+    .btn-print {
+      background: #0f766e;
+      color: #ffffff;
+    }
+
+    .btn-print:hover {
+      background: #115e59;
+    }
+
+    /* Math formatting */
+    .math {
+      font-family: "Cambria Math", "Times New Roman", serif;
+      font-size: 1.05em;
+    }
+
+    sup {
+      font-size: 0.72em;
+      line-height: 0;
+    }
+
+    /* Print Styles */
+    @media print {
+      .topbar, .actions-bar, #result-panel {
+        display: none !important;
+      }
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .header-card {
+        background: none !important;
+        color: #000000 !important;
+        border: 1px solid #000000;
+        box-shadow: none;
+        padding: 14px;
+      }
+      .meta-pill {
+        border: 1px solid #666;
+        color: #000;
+      }
+      .question-card {
+        break-inside: avoid;
+        border: 1px solid #cbd5e1;
+        margin-bottom: 10px;
+        padding: 10px 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Bar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <span>📝 KIỂM TRA 15 PHÚT – TOÁN 8</span>
+    </div>
+    <div class="topbar-right">
+      <div class="badge badge-progress" id="progress-badge">Đã làm: 0 / 30</div>
+      <div class="badge badge-timer" id="timer-badge">⏱ 15:00</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Header -->
+    <div class="header-card">
+      <h1>ĐỀ KIỂM TRA 15 PHÚT – MÔN TOÁN 8</h1>
+      <div class="subtitle">Nội dung: Phân tích đa thức thành nhân tử &amp; Đường trung bình của tam giác</div>
+      <div class="meta-grid">
+        <span class="meta-pill">⏰ Thời gian: 15 phút</span>
+        <span class="meta-pill">📌 Phần I: 20 câu TN (6,0 điểm)</span>
+        <span class="meta-pill">✔️ Phần II: 10 câu Đúng/Sai (4,0 điểm)</span>
+        <span class="meta-pill">🎯 Tổng điểm: 10,0 điểm</span>
+      </div>
+    </div>
+
+    <!-- Student Info -->
+    <div class="info-card">
+      <div class="input-group">
+        <label for="student-name">Họ và tên học sinh:</label>
+        <input type="text" id="student-name" placeholder="Nhập họ và tên..." />
+      </div>
+      <div class="input-group">
+        <label for="student-class">Lớp:</label>
+        <input type="text" id="student-class" placeholder="Ví dụ: 8A1" />
+      </div>
+    </div>
+
+    <!-- Result Panel -->
+    <div id="result-panel">
+      <div class="result-header">
+        <div>
+          <h2 style="color: var(--primary-dark); margin-bottom: 4px;">KẾT QUẢ BÀI LÀM</h2>
+          <div id="result-student" style="color: var(--muted); font-size: 0.95rem;"></div>
+        </div>
+        <div class="score-circle">
+          <div class="score-num" id="final-score">0,0</div>
+          <div class="score-label">Thang điểm 10</div>
+        </div>
+      </div>
+      <div class="result-stats">
+        <div class="stat-box">
+          Phần I (Trắc nghiệm)
+          <strong id="stat-mcq">0 / 20 câu (0,0 đ)</strong>
+        </div>
+        <div class="stat-box">
+          Phần II (Đúng / Sai)
+          <strong id="stat-tf">0 / 10 câu (0,0 đ)</strong>
+        </div>
+        <div class="stat-box">
+          Thời gian hoàn thành
+          <strong id="stat-time">00:00</strong>
+        </div>
+        <div class="stat-box">
+          Xếp loại
+          <strong id="stat-rank">—</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quiz Form -->
+    <form id="quiz-form">
+      <div class="section-title">
+        <span>PHẦN I. TRẮC NGHIỆM NHIỀU LỰA CHỌN (20 câu)</span>
+        <span class="pts">0,3 điểm / câu • 6,0 điểm</span>
+      </div>
+      <div id="mcq-container"></div>
+
+      <div class="section-title">
+        <span>PHẦN II. TRẮC NGHIỆM ĐÚNG – SAI (10 câu)</span>
+        <span class="pts">0,4 điểm / câu • 4,0 điểm</span>
+      </div>
+      <div id="tf-container"></div>
+
+      <div class="actions-bar">
+        <button type="button" class="btn btn-primary" id="btn-submit" onclick="submitQuiz(false)">Nộp bài &amp; Chấm điểm</button>
+        <button type="button" class="btn btn-secondary" onclick="resetQuiz()">Làm lại</button>
+        <button type="button" class="btn btn-print" onclick="window.print()">In đề / Lưu PDF</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const mcqQuestions = [
+      // Chủ đề 1: Phân tích đa thức thành nhân tử (Câu 1 - 10)
+      {
+        id: 1,
+        q: 'Phân tích đa thức <span class="math">3x<sup>2</sup> &minus; 6x</span> thành nhân tử ta được:',
+        options: [
+          '<span class="math">3x(x &minus; 2)</span>',
+          '<span class="math">3x(x &minus; 6)</span>',
+          '<span class="math">3(x<sup>2</sup> &minus; 2x)</span>',
+          '<span class="math">x(3x &minus; 6)</span>'
+        ],
+        ans: 0,
+        exp: 'Đặt nhân tử chung 3x: 3x² − 6x = 3x(x − 2).'
+      },
+      {
+        id: 2,
+        q: 'Phân tích đa thức <span class="math">x<sup>2</sup> &minus; 9</span> thành nhân tử ta được:',
+        options: [
+          '<span class="math">(x &minus; 3)<sup>2</sup></span>',
+          '<span class="math">(x &minus; 3)(x + 3)</span>',
+          '<span class="math">(x &minus; 9)(x + 9)</span>',
+          '<span class="math">(x + 3)<sup>2</sup></span>'
+        ],
+        ans: 1,
+        exp: 'Áp dụng hằng đẳng thức hiệu hai bình phương: x² − 9 = x² − 3² = (x − 3)(x + 3).'
+      },
+      {
+        id: 3,
+        q: 'Phân tích đa thức <span class="math">x<sup>2</sup> + 6x + 9</span> thành nhân tử ta được:',
+        options: [
+          '<span class="math">(x &minus; 3)<sup>2</sup></span>',
+          '<span class="math">(x + 9)<sup>2</sup></span>',
+          '<span class="math">(x + 3)<sup>2</sup></span>',
+          '<span class="math">(x + 3)(x &minus; 3)</span>'
+        ],
+        ans: 2,
+        exp: 'Áp dụng hằng đẳng thức bình phương của một tổng: x² + 2·x·3 + 3² = (x + 3)².'
+      },
+      {
+        id: 4,
+        q: 'Phân tích đa thức <span class="math">x(x &minus; 2) + 3(x &minus; 2)</span> thành nhân tử ta được:',
+        options: [
+          '<span class="math">(x &minus; 2)(x + 3)</span>',
+          '<span class="math">(x &minus; 2)(x &minus; 3)</span>',
+          '<span class="math">3x(x &minus; 2)</span>',
+          '<span class="math">(x + 2)(x + 3)</span>'
+        ],
+        ans: 0,
+        exp: 'Đặt nhân tử chung (x − 2): x(x − 2) + 3(x − 2) = (x − 2)(x + 3).'
+      },
+      {
+        id: 5,
+        q: 'Phân tích đa thức <span class="math">x<sup>3</sup> &minus; 8</span> thành nhân tử ta được:',
+        options: [
+          '<span class="math">(x &minus; 2)(x<sup>2</sup> &minus; 2x + 4)</span>',
+          '<span class="math">(x &minus; 2)(x<sup>2</sup> + 4x + 4)</span>',
+          '<span class="math">(x + 2)(x<sup>2</sup> &minus; 2x + 4)</span>',
+          '<span class="math">(x &minus; 2)(x<sup>2</sup> + 2x + 4)</span>'
+        ],
+        ans: 3,
+        exp: 'Áp dụng hằng đẳng thức hiệu hai lập phương: x³ − 2³ = (x − 2)(x² + 2x + 4).'
+      },
+      {
+        id: 6,
+        q: 'Phân tích đa thức <span class="math">5x(x &minus; y) &minus; (y &minus; x)</span> thành nhân tử ta được:',
+        options: [
+          '<span class="math">(x &minus; y)(5x &minus; 1)</span>',
+          '<span class="math">(x &minus; y)(5x + 1)</span>',
+          '<span class="math">(y &minus; x)(5x + 1)</span>',
+          '<span class="math">5x(x &minus; y)</span>'
+        ],
+        ans: 1,
+        exp: 'Đổi dấu: −(y − x) = +(x − y). Khi đó 5x(x − y) + (x − y) = (x − y)(5x + 1).'
+      },
+      {
+        id: 7,
+        q: 'Phân tích đa thức <span class="math">x<sup>2</sup> &minus; 2xy + y<sup>2</sup> &minus; 4</span> thành nhân tử ta được:',
+        options: [
+          '<span class="math">(x &minus; y &minus; 2)(x &minus; y + 2)</span>',
+          '<span class="math">(x + y &minus; 2)(x + y + 2)</span>',
+          '<span class="math">(x &minus; y &minus; 4)(x &minus; y + 4)</span>',
+          '<span class="math">(x &minus; y &minus; 2)<sup>2</sup></span>'
+        ],
+        ans: 0,
+        exp: 'Nhóm hạng tử: (x² − 2xy + y²) − 4 = (x − y)² − 2² = (x − y − 2)(x − y + 2).'
+      },
+      {
+        id: 8,
+        q: 'Phân tích đa thức <span class="math">x<sup>2</sup> &minus; 5x + 6</span> thành nhân tử ta được:',
+        options: [
+          '<span class="math">(x + 2)(x + 3)</span>',
+          '<span class="math">(x &minus; 1)(x &minus; 6)</span>',
+          '<span class="math">(x &minus; 2)(x &minus; 3)</span>',
+          '<span class="math">(x + 2)(x &minus; 3)</span>'
+        ],
+        ans: 2,
+        exp: 'Tách −5x = −2x − 3x: x² − 2x − 3x + 6 = x(x − 2) − 3(x − 2) = (x − 2)(x − 3).'
+      },
+      {
+        id: 9,
+        q: 'Các giá trị của <span class="math">x</span> thỏa mãn <span class="math">x<sup>2</sup> &minus; 4x = 0</span> là:',
+        options: [
+          '<span class="math">x = 0</span>',
+          '<span class="math">x = 4</span>',
+          '<span class="math">x = 0</span> hoặc <span class="math">x = &minus;4</span>',
+          '<span class="math">x = 0</span> hoặc <span class="math">x = 4</span>'
+        ],
+        ans: 3,
+        exp: 'x² − 4x = 0 ⇔ x(x − 4) = 0 ⇔ x = 0 hoặc x − 4 = 0 ⇔ x = 0 hoặc x = 4.'
+      },
+      {
+        id: 10,
+        q: 'Giá trị của biểu thức <span class="math">A = x<sup>2</sup> &minus; y<sup>2</sup></span> tại <span class="math">x = 87</span> và <span class="math">y = 13</span> là:',
+        options: ['740', '7400', '8700', '10000'],
+        ans: 1,
+        exp: 'A = (x − y)(x + y) = (87 − 13)(87 + 13) = 74 · 100 = 7400.'
+      },
+
+      // Chủ đề 2: Đường trung bình của tam giác (Câu 11 - 20)
+      {
+        id: 11,
+        q: 'Đường trung bình của tam giác là đoạn thẳng:',
+        options: [
+          'nối một đỉnh với trung điểm cạnh đối diện.',
+          'nối trung điểm hai cạnh của tam giác.',
+          'vuông góc với một cạnh tại trung điểm của nó.',
+          'đi qua trung điểm một cạnh và vuông góc với cạnh còn lại.'
+        ],
+        ans: 1,
+        exp: 'Theo định nghĩa, đường trung bình của tam giác là đoạn thẳng nối trung điểm hai cạnh của tam giác.'
+      },
+      {
+        id: 12,
+        q: 'Mỗi tam giác có bao nhiêu đường trung bình?',
+        options: ['1', '2', '3', '4'],
+        ans: 2,
+        exp: 'Một tam giác có 3 cạnh nên có 3 cặp cạnh, tương ứng với 3 đường trung bình.'
+      },
+      {
+        id: 13,
+        q: 'Tính chất của đường trung bình trong tam giác là:',
+        options: [
+          'song song với cạnh thứ ba và bằng cạnh thứ ba.',
+          'vuông góc với cạnh thứ ba và bằng nửa cạnh thứ ba.',
+          'song song với cạnh thứ ba và bằng nửa cạnh thứ ba.',
+          'cắt cạnh thứ ba tại trung điểm của nó.'
+        ],
+        ans: 2,
+        exp: 'Đường trung bình của tam giác song song với cạnh thứ ba và bằng nửa cạnh ấy.'
+      },
+      {
+        id: 14,
+        q: 'Cho <span class="math">&Delta;ABC</span>, gọi <span class="math">M, N</span> lần lượt là trung điểm của <span class="math">AB</span> và <span class="math">AC</span>. Biết <span class="math">BC = 12 cm</span>. Độ dài đoạn thẳng <span class="math">MN</span> là:',
+        options: ['4 cm', '6 cm', '12 cm', '24 cm'],
+        ans: 1,
+        exp: 'MN là đường trung bình của ΔABC nên MN = BC / 2 = 12 / 2 = 6 cm.'
+      },
+      {
+        id: 15,
+        q: 'Cho <span class="math">&Delta;ABC</span>, gọi <span class="math">D, E</span> lần lượt là trung điểm của <span class="math">AB</span> và <span class="math">AC</span>. Biết <span class="math">DE = 5,5 cm</span>. Độ dài cạnh <span class="math">BC</span> là:',
+        options: ['2,75 cm', '5,5 cm', '10 cm', '11 cm'],
+        ans: 3,
+        exp: 'DE là đường trung bình của ΔABC nên BC = 2 · DE = 2 · 5,5 = 11 cm.'
+      },
+      {
+        id: 16,
+        q: 'Cho <span class="math">&Delta;ABC</span> có chu vi bằng <span class="math">24 cm</span>. Gọi <span class="math">M, N, P</span> lần lượt là trung điểm của <span class="math">AB, BC, CA</span>. Chu vi của <span class="math">&Delta;MNP</span> là:',
+        options: ['6 cm', '12 cm', '18 cm', '48 cm'],
+        ans: 1,
+        exp: 'MN, NP, PM là ba đường trung bình của ΔABC nên chu vi ΔMNP bằng nửa chu vi ΔABC: 24 / 2 = 12 cm.'
+      },
+      {
+        id: 17,
+        q: 'Cho <span class="math">&Delta;ABC</span> có <span class="math">M</span> là trung điểm của <span class="math">AB</span>. Đường thẳng đi qua <span class="math">M</span> và song song với <span class="math">BC</span> cắt <span class="math">AC</span> tại <span class="math">N</span>. Khi đó:',
+        options: [
+          '<span class="math">N</span> là trung điểm của <span class="math">AC</span>.',
+          '<span class="math">AN = 2NC</span>.',
+          '<span class="math">MN = BC</span>.',
+          '<span class="math">MN &perp; AC</span>.'
+        ],
+        ans: 0,
+        exp: 'Đường thẳng đi qua trung điểm một cạnh của tam giác và song song với cạnh thứ hai thì đi qua trung điểm cạnh thứ ba.'
+      },
+      {
+        id: 18,
+        q: 'Cho <span class="math">&Delta;ABC</span>, <span class="math">D</span> và <span class="math">E</span> lần lượt là trung điểm của <span class="math">AB</span> và <span class="math">AC</span>. Biết <span class="math">&ang;ADE = 65&deg;</span>. Số đo góc <span class="math">&ang;ABC</span> là:',
+        options: ['32,5°', '65°', '115°', '130°'],
+        ans: 1,
+        exp: 'Vì DE là đường trung bình của ΔABC nên DE ∥ BC ⇒ ∠ABC = ∠ADE = 65° (hai góc đồng vị).'
+      },
+      {
+        id: 19,
+        q: 'Cho <span class="math">&Delta;ABC</span> có <span class="math">AB = 6 cm, AC = 8 cm, BC = 10 cm</span>. Gọi <span class="math">M, N</span> lần lượt là trung điểm của <span class="math">AB</span> và <span class="math">AC</span>. Chu vi tứ giác <span class="math">BMNC</span> là:',
+        options: ['12 cm', '19 cm', '22 cm', '24 cm'],
+        ans: 2,
+        exp: 'Ta có BM = 3 cm, NC = 4 cm, MN = BC/2 = 5 cm, BC = 10 cm. Chu vi BMNC = 3 + 5 + 4 + 10 = 22 cm.'
+      },
+      {
+        id: 20,
+        q: 'Để đo khoảng cách giữa hai điểm <span class="math">B</span> và <span class="math">C</span> bị ngăn cách bởi một cái ao (hình vẽ), người ta chọn điểm <span class="math">A</span> thích hợp rồi lấy trung điểm <span class="math">M</span> của <span class="math">AB</span> và trung điểm <span class="math">N</span> của <span class="math">AC</span>. Đo được <span class="math">MN = 45 m</span>. Khoảng cách <span class="math">BC</span> là:',
+        diagram: `
+          <svg width="260" height="150" viewBox="0 0 260 150" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+            <ellipse cx="130" cy="118" rx="68" ry="20" fill="#bae6fd" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <text x="130" y="123" font-size="12" fill="#0369a1" text-anchor="middle" font-style="italic">Cái ao</text>
+            <polygon points="130,18 40,122 220,122" fill="none" stroke="#1e293b" stroke-width="2"/>
+            <line x1="85" y1="70" x2="175" y2="70" stroke="#dc2626" stroke-width="2.2"/>
+            <circle cx="130" cy="18" r="3.5" fill="#1e293b"/>
+            <circle cx="40" cy="122" r="3.5" fill="#1e293b"/>
+            <circle cx="220" cy="122" r="3.5" fill="#1e293b"/>
+            <circle cx="85" cy="70" r="3.5" fill="#dc2626"/>
+            <circle cx="175" cy="70" r="3.5" fill="#dc2626"/>
+            <text x="130" y="12" font-size="13" font-weight="bold" text-anchor="middle">A</text>
+            <text x="26" y="128" font-size="13" font-weight="bold">B</text>
+            <text x="226" y="128" font-size="13" font-weight="bold">C</text>
+            <text x="68" y="72" font-size="13" font-weight="bold" fill="#dc2626">M</text>
+            <text x="182" y="72" font-size="13" font-weight="bold" fill="#dc2626">N</text>
+            <text x="130" y="64" font-size="12" font-weight="bold" fill="#dc2626" text-anchor="middle">45 m</text>
+          </svg>
+        `,
+        options: ['22,5 m', '45 m', '90 m', '135 m'],
+        ans: 2,
+        exp: 'MN là đường trung bình của ΔABC nên BC = 2 · MN = 2 · 45 = 90 m.'
+      }
+    ];
+
+    const tfQuestions = [
+      // Phân tích đa thức thành nhân tử (Câu 21 - 25)
+      {
+        id: 21,
+        q: 'Đa thức <span class="math">4x<sup>2</sup> &minus; 1</span> được phân tích thành nhân tử là <span class="math">(2x &minus; 1)(2x + 1)</span>.',
+        ans: true,
+        exp: 'Đúng. Vì 4x² − 1 = (2x)² − 1² = (2x − 1)(2x + 1).'
+      },
+      {
+        id: 22,
+        q: 'Đa thức <span class="math">x<sup>2</sup> &minus; 4x + 4</span> được phân tích thành nhân tử là <span class="math">(x + 2)<sup>2</sup></span>.',
+        ans: false,
+        exp: 'Sai. Vì x² − 4x + 4 = (x − 2)², không phải (x + 2)².'
+      },
+      {
+        id: 23,
+        q: 'Đa thức <span class="math">2x(x &minus; 1) + 3(1 &minus; x)</span> phân tích thành nhân tử được kết quả là <span class="math">(x &minus; 1)(2x &minus; 3)</span>.',
+        ans: true,
+        exp: 'Đúng. Vì 2x(x − 1) + 3(1 − x) = 2x(x − 1) − 3(x − 1) = (x − 1)(2x − 3).'
+      },
+      {
+        id: 24,
+        q: 'Đa thức <span class="math">x<sup>3</sup> + 27</span> được phân tích thành nhân tử là <span class="math">(x + 3)(x<sup>2</sup> + 3x + 9)</span>.',
+        ans: false,
+        exp: 'Sai. Theo hằng đẳng thức tổng hai lập phương: x³ + 27 = (x + 3)(x² − 3x + 9).'
+      },
+      {
+        id: 25,
+        q: 'Phương trình <span class="math">(x &minus; 5)(x + 2) = 0</span> có đúng hai nghiệm là <span class="math">x = 5</span> và <span class="math">x = &minus;2</span>.',
+        ans: true,
+        exp: 'Đúng. Tích bằng 0 khi x − 5 = 0 (x = 5) hoặc x + 2 = 0 (x = −2).'
+      },
+
+      // Đường trung bình của tam giác (Câu 26 - 30)
+      {
+        id: 26,
+        q: 'Đoạn thẳng nối đỉnh <span class="math">A</span> với trung điểm <span class="math">M</span> của cạnh <span class="math">BC</span> trong <span class="math">&Delta;ABC</span> được gọi là đường trung bình của <span class="math">&Delta;ABC</span>.',
+        ans: false,
+        exp: 'Sai. Đoạn thẳng nối một đỉnh với trung điểm cạnh đối diện là đường trung tuyến, không phải đường trung bình.'
+      },
+      {
+        id: 27,
+        q: 'Trong <span class="math">&Delta;ABC</span>, nếu <span class="math">D</span> và <span class="math">E</span> lần lượt là trung điểm của <span class="math">AB</span> và <span class="math">AC</span> thì <span class="math">DE &parallel; BC</span> và <span class="math">DE = &frac12;BC</span>.',
+        ans: true,
+        exp: 'Đúng. Đây là định lí về tính chất đường trung bình của tam giác.'
+      },
+      {
+        id: 28,
+        q: 'Cho <span class="math">&Delta;ABC</span> cân tại <span class="math">A</span>, gọi <span class="math">M, N</span> lần lượt là trung điểm của <span class="math">AB</span> và <span class="math">AC</span>. Khi đó tứ giác <span class="math">BMNC</span> là hình thang cân.',
+        ans: true,
+        exp: 'Đúng. Vì MN ∥ BC nên BMNC là hình thang; lại có ∠B = ∠C (ΔABC cân tại A) nên BMNC là hình thang cân.'
+      },
+      {
+        id: 29,
+        q: 'Nếu một tam giác có ba đường trung bình dài lần lượt là <span class="math">3 cm, 4 cm, 5 cm</span> thì chu vi của tam giác đó là <span class="math">12 cm</span>.',
+        ans: false,
+        exp: 'Sai. Ba cạnh của tam giác dài gấp đôi ba đường trung bình là 6 cm, 8 cm, 10 cm, nên chu vi là 24 cm.'
+      },
+      {
+        id: 30,
+        q: 'Cho <span class="math">&Delta;ABC</span> vuông tại <span class="math">A</span> có <span class="math">AB = 6 cm, AC = 8 cm</span>. Đường trung bình ứng với cạnh huyền <span class="math">BC</span> có độ dài bằng <span class="math">5 cm</span>.',
+        ans: true,
+        exp: 'Đúng. Theo định lí Pythagore: BC = √(6² + 8²) = 10 cm, nên đường trung bình ứng với cạnh huyền bằng 10 / 2 = 5 cm.'
+      }
+    ];
+
+    const LETTERS = ['A', 'B', 'C', 'D'];
+    let timeLeft = 15 * 60; // 15 phút
+    let timerInterval = null;
+    let isSubmitted = false;
+
+    function renderQuiz() {
+      const mcqContainer = document.getElementById('mcq-container');
+      mcqContainer.innerHTML = mcqQuestions.map(item => `
+        <div class="question-card" id="q-card-${item.id}">
+          <div class="q-header">
+            <span class="q-num">Câu ${item.id}.</span>
+            <div class="q-text">${item.q}</div>
+          </div>
+          ${item.diagram ? `<div class="q-diagram">${item.diagram}</div>` : ''}
+          <div class="options-grid">
+            ${item.options.map((opt, idx) => `
+              <label class="option-label" id="opt-${item.id}-${idx}">
+                <input type="radio" name="q${item.id}" value="${idx}" onchange="handleSelect(${item.id}, ${idx}, 'mcq')" />
+                <span><strong>${LETTERS[idx]}.</strong> ${opt}</span>
+              </label>
+            `).join('')}
+          </div>
+          <div class="explanation" id="exp-${item.id}">
+            <strong>Giải thích:</strong> ${item.exp}
+          </div>
+        </div>
+      `).join('');
+
+      const tfContainer = document.getElementById('tf-container');
+      tfContainer.innerHTML = tfQuestions.map(item => `
+        <div class="question-card" id="q-card-${item.id}">
+          <div class="q-header">
+            <span class="q-num">Câu ${item.id}.</span>
+            <div class="q-text">${item.q}</div>
+          </div>
+          <div class="tf-options">
+            <label class="option-label" id="opt-${item.id}-true">
+              <input type="radio" name="q${item.id}" value="true" onchange="handleSelect(${item.id}, 'true', 'tf')" />
+              <span>Đúng</span>
+            </label>
+            <label class="option-label" id="opt-${item.id}-false">
+              <input type="radio" name="q${item.id}" value="false" onchange="handleSelect(${item.id}, 'false', 'tf')" />
+              <span>Sai</span>
+            </label>
+          </div>
+          <div class="explanation" id="exp-${item.id}">
+            <strong>Giải thích:</strong> ${item.exp}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function handleSelect(qId, val, type) {
+      if (isSubmitted) return;
+      if (type === 'mcq') {
+        for (let i = 0; i < 4; i++) {
+          const el = document.getElementById(`opt-${qId}-${i}`);
+          if (el) el.classList.toggle('selected', i === val);
+        }
+      } else {
+        document.getElementById(`opt-${qId}-true`).classList.toggle('selected', val === 'true');
+        document.getElementById(`opt-${qId}-false`).classList.toggle('selected', val === 'false');
+      }
+      updateProgress();
+    }
+
+    function updateProgress() {
+      let answered = 0;
+      for (let i = 1; i <= 30; i++) {
+        if (document.querySelector(`input[name="q${i}"]:checked`)) {
+          answered++;
+        }
+      }
+      document.getElementById('progress-badge').textContent = `Đã làm: ${answered} / 30`;
+    }
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      timeLeft = 15 * 60;
+      const badge = document.getElementById('timer-badge');
+      badge.classList.remove('urgent');
+      badge.textContent = `⏱ ${formatTime(timeLeft)}`;
+
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        badge.textContent = `⏱ ${formatTime(timeLeft)}`;
+        if (timeLeft <= 120) {
+          badge.classList.add('urgent');
+        }
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          alert('Hết thời gian 15 phút! Hệ thống sẽ tự động nộp bài.');
+          submitQuiz(true);
+        }
+      }, 1000);
+    }
+
+    function submitQuiz(autoSubmit) {
+      if (isSubmitted) return;
+
+      let answered = 0;
+      for (let i = 1; i <= 30; i++) {
+        if (document.querySelector(`input[name="q${i}"]:checked`)) answered++;
+      }
+
+      if (!autoSubmit && answered < 30) {
+        const ok = confirm(`Bạn mới trả lời ${answered}/30 câu. Bạn có chắc chắn muốn nộp bài không?`);
+        if (!ok) return;
+      }
+
+      isSubmitted = true;
+      clearInterval(timerInterval);
+
+      let mcqCorrect = 0;
+      mcqQuestions.forEach(item => {
+        const checked = document.querySelector(`input[name="q${item.id}"]:checked`);
+        const card = document.getElementById(`q-card-${item.id}`);
+        const correctOpt = document.getElementById(`opt-${item.id}-${item.ans}`);
+        correctOpt.classList.add('opt-correct');
+
+        if (checked && Number(checked.value) === item.ans) {
+          mcqCorrect++;
+          card.classList.add('correct');
+        } else {
+          card.classList.add('wrong');
+          if (checked) {
+            document.getElementById(`opt-${item.id}-${checked.value}`).classList.add('opt-wrong');
+          }
+        }
+        document.getElementById(`exp-${item.id}`).style.display = 'block';
+      });
+
+      let tfCorrect = 0;
+      tfQuestions.forEach(item => {
+        const checked = document.querySelector(`input[name="q${item.id}"]:checked`);
+        const card = document.getElementById(`q-card-${item.id}`);
+        const correctKey = item.ans ? 'true' : 'false';
+        document.getElementById(`opt-${item.id}-${correctKey}`).classList.add('opt-correct');
+
+        if (checked && checked.value === correctKey) {
+          tfCorrect++;
+          card.classList.add('correct');
+        } else {
+          card.classList.add('wrong');
+          if (checked) {
+            document.getElementById(`opt-${item.id}-${checked.value}`).classList.add('opt-wrong');
+          }
+        }
+        document.getElementById(`exp-${item.id}`).style.display = 'block';
+      });
+
+      // Disable all radio inputs
+      document.querySelectorAll('#quiz-form input[type="radio"]').forEach(el => el.disabled = true);
+      document.getElementById('btn-submit').disabled = true;
+      document.getElementById('btn-submit').style.opacity = '0.6';
+
+      // Score calculation: 0.3 per MCQ (6.0), 0.4 per T/F (4.0)
+      const mcqScore = +(mcqCorrect * 0.3).toFixed(2);
+      const tfScore = +(tfCorrect * 0.4).toFixed(2);
+      const totalScore = +(mcqScore + tfScore).toFixed(2);
+      const elapsed = 15 * 60 - timeLeft;
+
+      const name = document.getElementById('student-name').value.trim() || 'Chưa nhập tên';
+      const cls = document.getElementById('student-class').value.trim() || 'Chưa nhập lớp';
+
+      let rank = 'Chưa đạt';
+      if (totalScore >= 8.0) rank = 'Tốt 🌟';
+      else if (totalScore >= 6.5) rank = 'Khá 👍';
+      else if (totalScore >= 5.0) rank = 'Đạt ✅';
+
+      document.getElementById('result-student').textContent = `Học sinh: ${name} — Lớp: ${cls}`;
+      document.getElementById('final-score').textContent = totalScore.toFixed(1).replace('.', ',');
+      document.getElementById('stat-mcq').textContent = `${mcqCorrect} / 20 câu (${mcqScore.toFixed(1).replace('.', ',')} đ)`;
+      document.getElementById('stat-tf').textContent = `${tfCorrect} / 10 câu (${tfScore.toFixed(1).replace('.', ',')} đ)`;
+      document.getElementById('stat-time').textContent = formatTime(elapsed);
+      document.getElementById('stat-rank').textContent = rank;
+
+      const panel = document.getElementById('result-panel');
+      panel.style.display = 'block';
+      panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function resetQuiz() {
+      isSubmitted = false;
+      document.getElementById('result-panel').style.display = 'none';
+      document.getElementById('btn-submit').disabled = false;
+      document.getElementById('btn-submit').style.opacity = '1';
+      renderQuiz();
+      updateProgress();
+      startTimer();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Initialize
+    renderQuiz();
+    startTimer();
+  </script>
+</body>
+</html>
